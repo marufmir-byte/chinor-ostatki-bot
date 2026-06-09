@@ -16,7 +16,13 @@ SCOPES = [
     "https://www.googleapis.com/auth/drive"
 ]
 
-creds = Credentials.from_service_account_file("credentials.json", scopes=SCOPES)
+GOOGLE_CREDENTIALS = os.getenv("GOOGLE_CREDENTIALS")
+
+if not GOOGLE_CREDENTIALS:
+    raise ValueError("GOOGLE_CREDENTIALS не найден")
+
+creds_dict = json.loads(GOOGLE_CREDENTIALS)
+creds = Credentials.from_service_account_info(creds_dict, scopes=SCOPES)
 client = gspread.authorize(creds)
 sheet = client.open(TABLE_NAME).sheet1
 
