@@ -8,7 +8,10 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
-BOT_TOKEN = "8815800506:AAFpUXbyqAj7Cm-f_chFoNLN9kq-BcZF8uE"
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+
+if not BOT_TOKEN:
+    raise ValueError("BOT_TOKEN не найден")
 
 TABLE_NAME = "Остатки Чинор"
 
