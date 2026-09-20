@@ -2,6 +2,7 @@ import asyncio
 from datetime import datetime
 import os
 import json
+from aiohttp import web
 import gspread
 from google.oauth2.service_account import Credentials
 from aiogram import Bot, Dispatcher, types
@@ -327,7 +328,14 @@ async def handle_message(message: types.Message):
 
 
 async def main():
-    print("Бот запущен")
+    app = web.Application()
+    app.router.add_get("/", lambda request: web.Response(text="OK"))
+    runner = web.AppRunner(app)
+    await runner.setup()
+    port = int(os.getenv("PORT", "10000"))
+    site = web.TCPSite(runner, "0.0.0.0", port)
+    await site.start()
+    print(f"Бот запущен, порт {port}")
     await dp.start_polling(bot)
 
 
